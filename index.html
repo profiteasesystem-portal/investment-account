@@ -88,16 +88,16 @@
                 <div class="mb-4">
                     <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input type="email" id="login-email" name="email" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-                        placeholder="your-email@example.com">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                           placeholder="your-email@example.com">
                 </div>
                 
                 <!-- Password -->
                 <div class="mb-5">
                     <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <input type="password" id="login-password" name="password" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
-                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                           placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
                 </div>
 
                 <!-- Forgot Password -->
@@ -109,7 +109,7 @@
                 
                 <!-- Login Button -->
                 <button type="submit" id="login-button"
-                    class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-50">
+                        class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-50">
                     Secure Login
                 </button>
             </form>
@@ -138,12 +138,21 @@
                         </h1>
                     </div>
                     
-                    <!-- Logout Button -->
-                    <button id="logout-button"
-                        class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                        <span class="hidden md:inline">Log Out</span>
-                    </button>
+                    <!-- Action Buttons -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Withdrawal Button -->
+                        <button id="withdrawal-button"
+                                class="btn-secondary font-bold py-2 px-5 rounded-lg shadow-md transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 text-sm">
+                            Withdraw
+                        </button>
+
+                        <!-- Logout Button -->
+                        <button id="logout-button"
+                                class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            <span class="hidden md:inline">Log Out</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -151,40 +160,58 @@
         <!-- Main Content Area -->
         <main class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
             
-            <!-- Stat Cards -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Stat Cards - Crypto Wallet Style -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 
                 <!-- Available Balance Card -->
-                <div class="lg:col-span-2 bg-gradient-to-br from-green-700 to-green-800 text-white p-8 rounded-2xl shadow-2xl flex flex-col justify-between">
+                <div class="md:col-span-3 bg-gradient-to-br from-gray-800 to-gray-900 text-white p-6 rounded-xl shadow-lg flex items-center space-x-4">
+                    <!-- Icon -->
+                    <div class="bg-green-600 p-3 rounded-full">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
                     <div>
-                        <div class="text-lg font-medium text-green-200 uppercase tracking-wider">Available Investment Balance</div>
-                        <div id="stat-balance" class="text-5xl md:text-6xl font-extrabold text-white mt-2 mb-4">
+                        <div class="text-sm font-medium text-gray-400 uppercase tracking-wider">Available Balance</div>
+                        <div id="stat-balance" class="text-3xl font-bold text-white mt-1">
                             $0.00
                         </div>
-                    </div>
-                    <div class="text-sm text-green-200">
-                        This balance reflects all funds and returns.
                     </div>
                 </div>
                 
                 <!-- Total Returns Card -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg border-l-8 border-yellow-500">
-                    <div class="text-lg font-medium text-gray-500 uppercase tracking-wider">Total Returns</div>
-                    <div id="stat-total-roi" class="text-4xl font-extrabold text-gray-800 text-yellow-600 mt-2">
-                        $0.00
+                <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4">
+                     <!-- Icon -->
+                    <div class="bg-yellow-500 p-3 rounded-full">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                         </svg>
                     </div>
-                    <p class="text-sm text-gray-500 mt-4">The cumulative ROI on your investments.</p>
+                    <div>
+                        <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Total Returns (ROI)</div>
+                        <div id="stat-total-roi" class="text-2xl font-bold text-gray-800 mt-1">
+                            $0.00
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Investment Status Card -->
-                <div class="bg-white p-8 rounded-2xl shadow-lg border-l-8 border-blue-500">
-                    <div class="text-lg font-medium text-gray-500 uppercase tracking-wider">Investment Status</div>
-                    <div id="stat-investment-status" class="text-4xl font-extrabold text-blue-600 mt-2 capitalize">
-                        Loading...
+                 <!-- [MODIFIED] Removed comment -->
+                 <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4 md:col-span-2">
+                     <!-- Icon -->
+                    <div class="bg-blue-500 p-3 rounded-full">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                         </svg>
                     </div>
-                    <p class="text-sm text-gray-500 mt-4">Current status of your fund.</p>
+                    <div>
+                        <div class="text-xs font-medium text-gray-500 uppercase tracking-wider">Investment Status</div>
+                         <!-- [MODIFIED] Text content is now set by JS, defaults to empty unless 'On Hold' -->
+                        <div id="stat-investment-status" class="text-2xl font-bold text-blue-600 mt-1 capitalize h-8"> {/* Added h-8 for consistent height */}
+                            {/* Text content will be added here by JS if status is 'On Hold' */}
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
             <!-- Transaction History -->
@@ -242,6 +269,31 @@
             <span id="alert-message"></span>
         </div>
     </div>
+
+    <!-- 
+      =================================
+      ON HOLD MODAL
+      =================================
+    -->
+    <div id="modal-on-hold" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-40 hidden" onclick="this.classList.add('hidden')">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-gray-800">Withdrawal On Hold</h3>
+                <button id="modal-on-hold-close" class="text-gray-400 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6">
+                Your investment is currently "On Hold". Please contact your accountant to process this investment before a withdrawal can be made.
+            </p>
+            <a href="https://www.tiktok.com/@catalina_bonilla__?_t=ZM-90Zqw9lEcAe&_r=1" 
+               target="_blank" rel="noopener noreferrer"
+               class="w-full text-center block btn-primary font-bold py-3 px-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300">
+               Contact Accountant
+            </a>
+        </div>
+    </div>
+
 
     <!-- 
       =================================
@@ -332,6 +384,11 @@
         const alertBox = document.getElementById('alert-box');
         const alertContent = document.getElementById('alert-content');
         const alertMessage = document.getElementById('alert-message');
+
+        // Withdrawal Modal Elements
+        const withdrawalButton = document.getElementById('withdrawal-button');
+        const modalOnHold = document.getElementById('modal-on-hold');
+        const modalOnHoldClose = document.getElementById('modal-on-hold-close');
 
         // --- Utility Functions ---
 
@@ -434,7 +491,7 @@
                     clientName.textContent = "Client";
                     statBalance.textContent = "$0.00";
                     statTotalRoi.textContent = "$0.00";
-                    statInvestmentStatus.textContent = "Loading...";
+                    statInvestmentStatus.textContent = ""; // Clear status text
                     // Reset status color to default
                     statInvestmentStatus.classList.remove('text-green-600', 'text-yellow-600', 'text-orange-600', 'text-red-600', 'text-gray-600');
                     statInvestmentStatus.classList.add('text-blue-600');
@@ -529,7 +586,7 @@
                     // Should only be one doc
                     const userDoc = snapshot.docs[0];
                     userDocId = userDoc.id;
-                    currentUserData = userDoc.data();
+                    currentUserData = userDoc.data(); // <--- This is where we store the user's data
                     
                     // Render the dashboard cards
                     renderDashboardCards(currentUserData);
@@ -581,7 +638,8 @@
         // --- Rendering Functions ---
 
         /**
-         * Updates the dashboard stat cards and welcome message.
+         * [MODIFIED] Updates the dashboard stat cards and welcome message.
+         * Hides status text unless it's 'On Hold'.
          */
         const renderDashboardCards = (userData) => {
             if (!userData) return;
@@ -592,7 +650,13 @@
 
             if (statInvestmentStatus) {
                 const status = userData.investmentStatus || "N/A";
-                statInvestmentStatus.textContent = status;
+                
+                // [MODIFIED] Only show text if status is 'On Hold'
+                if (status.toLowerCase() === 'on hold') {
+                    statInvestmentStatus.textContent = status;
+                } else {
+                    statInvestmentStatus.textContent = ''; // Hide text for other statuses
+                }
                 
                 // Reset colors - Added all colors from your requirement list
                 statInvestmentStatus.classList.remove(
@@ -674,6 +738,28 @@
             forgotPasswordLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 handleForgotPassword();
+            });
+        }
+
+        // Withdrawal Logic
+        if (withdrawalButton) {
+            withdrawalButton.addEventListener('click', () => {
+                // Check the globally stored user data (which is updated in real-time)
+                if (currentUserData && currentUserData.investmentStatus === 'On Hold') {
+                    // Show the 'On Hold' modal
+                    modalOnHold.classList.remove('hidden');
+                } else {
+                    // Changed this alert text as requested.
+                    showAlert('Contact accountant to withdraw cash.', 'success');
+                    console.log('User status is not On Hold. Ready for withdrawal.');
+                }
+            });
+        }
+
+        // Modal Close Logic
+        if (modalOnHoldClose) {
+            modalOnHoldClose.addEventListener('click', () => {
+                modalOnHold.classList.add('hidden');
             });
         }
 
