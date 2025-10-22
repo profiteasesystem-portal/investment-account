@@ -208,8 +208,8 @@
                             <tr>
                                 <td colspan="4" class="py-10 px-6 text-center text-gray-500">
                                     <svg class="animate-spin h-6 w-6 text-green-600 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                     Loading transaction history...
                                 </td>
@@ -249,7 +249,7 @@
       =================================
     -->
     <script type="module">
-        // Firebase SDK Imports (v9 Modular)
+        // Firebase SDK Imports (v11 Modular)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { 
             getAuth, 
@@ -268,16 +268,16 @@
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- IMPORTANT: Firebase Configuration ---
-        // PASTE YOUR FIREBASE CONFIG OBJECT HERE
-        // This MUST be the *same* config as your Admin Dashboard.
+        // --- UPDATED: Firebase Configuration ---
+        // This is the config you provided.
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR-PROJECT-ID.firebaseapp.com",
-            projectId: "YOUR-PROJECT-ID",
-            storageBucket: "YOUR-PROJECT-ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDIO90MHmuV-LMDbIGeFTTl8gERtywmrcw",
+            authDomain: "profitease-9ac10.firebaseapp.com",
+            projectId: "profitease-9ac10",
+            storageBucket: "profitease-9ac10.firebasestorage.app",
+            messagingSenderId: "675034886547",
+            appId: "1:675034886547:web:a84da3093f10fbc0d9b866"
+            // measurementId is not needed for Auth/Firestore so it's omitted.
         };
         
         // --- IMPORTANT: App ID ---
@@ -287,13 +287,23 @@
         // --- Firebase App Initialization ---
         let app, auth, db;
         try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            setLogLevel('debug'); // Enable detailed Firestore logs
+            // Check if Firebase config keys are still placeholders
+            if (firebaseConfig.apiKey.includes("AIzaSyD")) {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                // setLogLevel('debug'); // Enable detailed Firestore logs
+            } else {
+                throw new Error("Firebase config is not set. Please replace placeholders.");
+            }
         } catch (e) {
             console.error("Failed to initialize Firebase:", e.message);
-            showAlert("Error initializing Firebase. Check console.", "error");
+            // Don't use showAlert here as it might not be ready
+            // We'll show an error on the login screen instead.
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.innerHTML = `<div class="p-4 bg-red-100 text-red-700 rounded-lg text-center"><strong>Firebase Error:</strong> ${e.message}</div>`;
+            }
         }
 
         // --- Global State ---
@@ -369,6 +379,7 @@
          * Disables a form button and shows loading text.
          */
         const setButtonLoading = (button, loadingText = "Processing...") => {
+            if (!button) return;
             button.disabled = true;
             button.dataset.originalText = button.innerHTML;
             button.innerHTML = `
@@ -384,6 +395,7 @@
          * Restores a form button to its original state.
          */
         const resetButton = (button) => {
+            if (!button) return;
             button.disabled = false;
             if (button.dataset.originalText) {
                 button.innerHTML = button.dataset.originalText;
@@ -395,36 +407,41 @@
         /**
          * Main authentication state listener.
          */
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is logged in
-                currentUser = user;
-                loginContainer.classList.add('hidden');
-                dashboardContainer.classList.remove('hidden');
-                
-                // Start listening to data
-                initDashboardListeners(user);
+        if (auth) { // Only run if auth initialized successfully
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is logged in
+                    currentUser = user;
+                    loginContainer.classList.add('hidden');
+                    dashboardContainer.classList.remove('hidden');
+                    
+                    // Start listening to data
+                    initDashboardListeners(user);
 
-            } else {
-                // User is logged out
-                currentUser = null;
-                loginContainer.classList.remove('hidden');
-                dashboardContainer.classList.add('hidden');
-                
-                // Stop listening to data
-                if (unsubscribeUser) unsubscribeUser();
-                if (unsubscribeTransactions) unsubscribeTransactions();
-                
-                // Clear local data
-                currentUserData = null;
-                userDocId = null;
-                clientName.textContent = "Client";
-                statBalance.textContent = "$0.00";
-                statTotalRoi.textContent = "$0.00";
-                statInvestmentStatus.textContent = "Loading...";
-                transactionsTableBody.innerHTML = `<tr><td colspan="4" class="py-10 px-6 text-center text-gray-500">Please log in to view data.</td></tr>`;
-            }
-        });
+                } else {
+                    // User is logged out
+                    currentUser = null;
+                    loginContainer.classList.remove('hidden');
+                    dashboardContainer.classList.add('hidden');
+                    
+                    // Stop listening to data
+                    if (unsubscribeUser) unsubscribeUser();
+                    if (unsubscribeTransactions) unsubscribeTransactions();
+                    
+                    // Clear local data and reset UI
+                    currentUserData = null;
+                    userDocId = null;
+                    clientName.textContent = "Client";
+                    statBalance.textContent = "$0.00";
+                    statTotalRoi.textContent = "$0.00";
+                    statInvestmentStatus.textContent = "Loading...";
+                    // Reset status color to default
+                    statInvestmentStatus.classList.remove('text-green-600', 'text-yellow-600', 'text-orange-600', 'text-red-600', 'text-gray-600');
+                    statInvestmentStatus.classList.add('text-blue-600');
+                    transactionsTableBody.innerHTML = `<tr><td colspan="4" class="py-10 px-6 text-center text-gray-500">Please log in to view data.</td></tr>`;
+                }
+            });
+        }
 
         /**
          * Handles the client login form submission.
@@ -496,6 +513,7 @@
             
             // 1. Listen to the User's document
             try {
+                // Correct path based on your structure
                 const usersCol = collection(db, 'artifacts', appId, 'public/data/users');
                 // Find the user doc that matches the logged-in auth email
                 const userQuery = query(usersCol, where("email", "==", user.email));
@@ -540,6 +558,7 @@
             if (unsubscribeTransactions) unsubscribeTransactions();
 
             try {
+                // Correct path based on your structure
                 const txCol = collection(db, 'artifacts', appId, 'public/data/transactions');
                 // Find transactions matching this user's ID, order by date
                 const txQuery = query(txCol, where("userId", "==", docId), orderBy('date', 'desc'));
@@ -575,23 +594,35 @@
                 const status = userData.investmentStatus || "N/A";
                 statInvestmentStatus.textContent = status;
                 
-                // Reset colors
-                statInvestmentStatus.classList.remove('text-blue-600', 'text-yellow-600', 'text-green-600', 'text-red-600');
+                // Reset colors - Added all colors from your requirement list
+                statInvestmentStatus.classList.remove(
+                    'text-green-600', 
+                    'text-yellow-600', 
+                    'text-blue-600', 
+                    'text-orange-600', 
+                    'text-red-600',
+                    'text-gray-600'
+                );
                 
-                // Apply color based on status text
+                // Apply color based on status text (from your new requirements)
                 switch (status.toLowerCase()) {
-                    case 'deposited':
-                    case 'active':
+                    case 'funds available':
                         statInvestmentStatus.classList.add('text-green-600');
                         break;
                     case 'pending':
                         statInvestmentStatus.classList.add('text-yellow-600');
                         break;
+                    case 'processing':
+                        statInvestmentStatus.classList.add('text-blue-600');
+                        break;
+                    case 'deposited':
+                        statInvestmentStatus.classList.add('text-orange-600'); // As requested
+                        break;
                     case 'on hold':
                         statInvestmentStatus.classList.add('text-red-600');
                         break;
                     default:
-                        statInvestmentStatus.classList.add('text-blue-600');
+                        statInvestmentStatus.classList.add('text-gray-600'); // Neutral for N/A or other
                 }
             }
         };
@@ -608,7 +639,7 @@
             }
 
             transactionsTableBody.innerHTML = transactions.map(tx => {
-                const isCredit = tx.amount >= 0;
+                const isCredit = (tx.amount || 0) >= 0;
                 const amountClass = isCredit ? 'text-green-600' : 'text-red-600';
                 const typeLabel = isCredit ? 'Credit' : 'Debit';
                 const typeClass = isCredit ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
@@ -616,7 +647,7 @@
                 return `
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="py-4 px-6 text-sm text-gray-700">${formatDate(tx.date)}</td>
-                        <td class="py-4 px-6 text-sm font-medium text-gray-900">${tx.description}</td>
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900">${tx.description || 'No description'}</td>
                         <td class="py-4 px-6 text-sm">
                             <span class="px-3 py-1 text-xs font-medium rounded-full ${typeClass}">
                                 ${tx.type || typeLabel}
@@ -633,12 +664,18 @@
         // --- Event Listeners ---
         
         // Auth
-        loginForm.addEventListener('submit', handleLogin);
-        logoutButton.addEventListener('click', handleLogout);
-        forgotPasswordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleForgotPassword();
-        });
+        if (loginForm) {
+            loginForm.addEventListener('submit', handleLogin);
+        }
+        if (logoutButton) {
+            logoutButton.addEventListener('click', handleLogout);
+        }
+        if (forgotPasswordLink) {
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                handleForgotPassword();
+            });
+        }
 
     </script>
 </body>
