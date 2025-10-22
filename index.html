@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profit Ease - Client Portal</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        
+        /* Brand Colors */
+        :root {
+            --brand-green: #15803d; /* Tailwind green-700 */
+            --brand-gold: #ca8a04; /* Tailwind yellow-600 */
+        }
+        
+        /* Custom Button Styles */
+        .btn-primary {
+            background-color: var(--brand-green);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #16a34a; /* Tailwind green-600 */
+        }
+        
+        .btn-secondary {
+            background-color: #eab308; /* Tailwind yellow-500 */
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: var(--brand-gold);
+        }
+        
+        /* Hide scrollbar for aesthetics */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Fade-in animation for dashboard */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- 
+      =================================
+      LOGIN CONTAINER
+      =================================
+      Visible by default. Hidden when auth state is 'loggedIn'.
+    -->
+    <div id="login-container" class="flex min-h-screen items-center justify-center bg-gray-900 p-4">
+        <div class="w-full max-w-md">
+            <form id="login-form" class="bg-white p-8 rounded-2xl shadow-2xl transition-all">
+                <div class="flex flex-col items-center mb-6">
+                    <!-- Icon -->
+                    <svg class="h-16 w-16 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V6.375c0-.621.504-1.125 1.125-1.125h.375m16.5 0h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m-1.5-1.5v.375c0 .621.504 1.125 1.125 1.125h.375a1.125 1.125 0 0 0 1.125-1.125V6.375a1.125 1.125 0 0 0-1.125-1.125h-.375m-1.5-1.5v-.75a.75.75 0 0 0-.75-.75h-.75" />
+                    </svg>
+                    <h1 class="text-3xl font-bold text-gray-800 mt-2">Profit Ease</h1>
+                    <p class="text-lg font-medium text-gray-600">Client Investment Portal</p>
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-4">
+                    <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="login-email" name="email" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                        placeholder="your-email@example.com">
+                </div>
+                
+                <!-- Password -->
+                <div class="mb-5">
+                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="login-password" name="password" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"
+                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+                </div>
+
+                <!-- Forgot Password -->
+                <div class="text-right mb-6">
+                    <a href="#" id="forgot-password-link" class="text-sm font-medium text-green-700 hover:text-green-600">
+                        Forgot password?
+                    </a>
+                </div>
+                
+                <!-- Login Button -->
+                <button type="submit" id="login-button"
+                    class="w-full btn-primary font-bold py-3 px-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-50">
+                    Secure Login
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 
+      =================================
+      CLIENT DASHBOARD CONTAINER
+      =================================
+      Hidden by default. Visible when auth state is 'loggedIn'.
+    -->
+    <div id="dashboard-container" class="hidden min-h-screen bg-gray-100 fade-in">
+        
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <!-- Logo & Welcome -->
+                    <div class="flex items-center space-x-4">
+                        <svg class="h-10 w-10 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V6.375c0-.621.504-1.125 1.125-1.125h.375m16.5 0h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m-1.5-1.5v.375c0 .621.504 1.125 1.125 1.125h.375a1.125 1.125 0 0 0 1.125-1.125V6.375a1.125 1.125 0 0 0-1.125-1.125h-.375m-1.5-1.5v-.75a.75.75 0 0 0-.75-.75h-.75" />
+                        </svg>
+                        <h1 class="text-xl md:text-2xl font-semibold text-gray-700">
+                            Welcome, <span id="client-name" class="font-bold text-green-800">Client</span>
+                        </h1>
+                    </div>
+                    
+                    <!-- Logout Button -->
+                    <button id="logout-button"
+                        class="flex items-center space-x-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span class="hidden md:inline">Log Out</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+            
+            <!-- Stat Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                
+                <!-- Available Balance Card -->
+                <div class="lg:col-span-2 bg-gradient-to-br from-green-700 to-green-800 text-white p-8 rounded-2xl shadow-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="text-lg font-medium text-green-200 uppercase tracking-wider">Available Investment Balance</div>
+                        <div id="stat-balance" class="text-5xl md:text-6xl font-extrabold text-white mt-2 mb-4">
+                            $0.00
+                        </div>
+                    </div>
+                    <div class="text-sm text-green-200">
+                        This balance reflects all funds and returns.
+                    </div>
+                </div>
+                
+                <!-- Total Returns Card -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-l-8 border-yellow-500">
+                    <div class="text-lg font-medium text-gray-500 uppercase tracking-wider">Total Returns</div>
+                    <div id="stat-total-roi" class="text-5xl font-extrabold text-gray-800 text-yellow-600 mt-2">
+                        $0.00
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">The cumulative ROI on your investments.</p>
+                </div>
+
+            </div>
+
+            <!-- Transaction History -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <h2 class="text-2xl font-bold text-gray-800 p-6 border-b border-gray-200">
+                    Transaction History
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[600px] text-left">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th class="py-4 px-6 text-sm font-semibold text-gray-600 uppercase">Date</th>
+                                <th class="py-4 px-6 text-sm font-semibold text-gray-600 uppercase">Description</th>
+                                <th class="py-4 px-6 text-sm font-semibold text-gray-600 uppercase">Type</th>
+                                <th class="py-4 px-6 text-sm font-semibold text-gray-600 uppercase text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-table-body" class="divide-y divide-gray-200">
+                            <!-- Rows will be injected by JS -->
+                            <tr>
+                                <td colspan="4" class="py-10 px-6 text-center text-gray-500">
+                                    <svg class="animate-spin h-6 w-6 text-green-600 mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Loading transaction history...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- 
+      =================================
+      ALERT / TOAST NOTIFICATION
+      =================================
+    -->
+    <div id="alert-box" class="fixed top-6 right-6 w-full max-w-sm z-50 hidden">
+        <div id="alert-content" class="p-4 rounded-lg shadow-xl text-white">
+            <span id="alert-message"></span>
+        </div>
+    </div>
+
+    <!-- 
+      =================================
+      FIREBASE SDK & APP LOGIC
+      =================================
+    -->
+    <script type="module">
+        // Firebase SDK Imports (v9 Modular)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signInWithEmailAndPassword, 
+            sendPasswordResetEmail,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            onSnapshot, 
+            query, 
+            orderBy, 
+            where, 
+            setLogLevel
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- IMPORTANT: Firebase Configuration ---
+        // PASTE YOUR FIREBASE CONFIG OBJECT HERE
+        // This MUST be the *same* config as your Admin Dashboard.
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR-PROJECT-ID.firebaseapp.com",
+            projectId: "YOUR-PROJECT-ID",
+            storageBucket: "YOUR-PROJECT-ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // --- IMPORTANT: App ID ---
+        // This MUST match the 'appId' you use in your Admin Dashboard.
+        const appId = 'profitease-app'; 
+
+        // --- Firebase App Initialization ---
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            setLogLevel('debug'); // Enable detailed Firestore logs
+        } catch (e) {
+            console.error("Failed to initialize Firebase:", e.message);
+            showAlert("Error initializing Firebase. Check console.", "error");
+        }
+
+        // --- Global State ---
+        let currentUser = null;
+        let currentUserData = null; // Stores data from 'users' collection
+        let userDocId = null; // Stores the Firestore doc ID
+        let unsubscribeUser = null; // To stop user listener on logout
+        let unsubscribeTransactions = null; // To stop tx listener on logout
+
+        // --- DOM Element References ---
+        const loginContainer = document.getElementById('login-container');
+        const dashboardContainer = document.getElementById('dashboard-container');
+        const loginForm = document.getElementById('login-form');
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        
+        // Dashboard Elements
+        const clientName = document.getElementById('client-name');
+        const statBalance = document.getElementById('stat-balance');
+        const statTotalRoi = document.getElementById('stat-total-roi');
+        const transactionsTableBody = document.getElementById('transactions-table-body');
+
+        // Alert Box
+        const alertBox = document.getElementById('alert-box');
+        const alertContent = document.getElementById('alert-content');
+        const alertMessage = document.getElementById('alert-message');
+
+        // --- Utility Functions ---
+
+        /**
+         * Formats a number as USD currency.
+         */
+        const formatCurrency = (num) => {
+            if (typeof num !== 'number') num = 0;
+            return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        };
+        
+        /**
+         * Formats a Firebase Timestamp or Date object.
+         */
+        const formatDate = (ts) => {
+            if (!ts) return 'N/A';
+            const date = ts.toDate ? ts.toDate() : (ts instanceof Date ? ts : new Date());
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        };
+
+        /**
+         * Shows a success or error alert message.
+         */
+        const showAlert = (message, type = 'success') => {
+            console.log(`Alert (${type}):`, message);
+            alertMessage.textContent = message;
+            alertContent.className = 'p-4 rounded-lg shadow-xl text-white'; // Reset
+            if (type === 'success') {
+                alertContent.classList.add('bg-green-600');
+            } else {
+                alertContent.classList.add('bg-red-600');
+            }
+            alertBox.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 3000);
+        };
+        
+        /**
+         * Disables a form button and shows loading text.
+         */
+        const setButtonLoading = (button, loadingText = "Processing...") => {
+            button.disabled = true;
+            button.dataset.originalText = button.innerHTML;
+            button.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                ${loadingText}
+            `;
+        };
+
+        /**
+         * Restores a form button to its original state.
+         */
+        const resetButton = (button) => {
+            button.disabled = false;
+            if (button.dataset.originalText) {
+                button.innerHTML = button.dataset.originalText;
+            }
+        };
+
+        // --- Core App Logic & Auth ---
+
+        /**
+         * Main authentication state listener.
+         */
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is logged in
+                currentUser = user;
+                loginContainer.classList.add('hidden');
+                dashboardContainer.classList.remove('hidden');
+                
+                // Start listening to data
+                initDashboardListeners(user);
+
+            } else {
+                // User is logged out
+                currentUser = null;
+                loginContainer.classList.remove('hidden');
+                dashboardContainer.classList.add('hidden');
+                
+                // Stop listening to data
+                if (unsubscribeUser) unsubscribeUser();
+                if (unsubscribeTransactions) unsubscribeTransactions();
+                
+                // Clear local data
+                currentUserData = null;
+                userDocId = null;
+                clientName.textContent = "Client";
+                statBalance.textContent = "$0.00";
+                statTotalRoi.textContent = "$0.00";
+                transactionsTableBody.innerHTML = `<tr><td colspan="4" class="py-10 px-6 text-center text-gray-500">Please log in to view data.</td></tr>`;
+            }
+        });
+
+        /**
+         * Handles the client login form submission.
+         */
+        const handleLogin = async (e) => {
+            e.preventDefault();
+            setButtonLoading(loginButton, "Logging in...");
+            
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // onAuthStateChanged will handle the UI switch
+                showAlert("Login successful. Welcome!", "success");
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                showAlert(`Login Failed: ${error.message}`, "error");
+            } finally {
+                resetButton(loginButton);
+            }
+        };
+        
+        /**
+         * Handles the client logout.
+         */
+        const handleLogout = async () => {
+            try {
+                await signOut(auth);
+                // onAuthStateChanged will handle the UI switch
+                showAlert("You have been logged out.", "success");
+            } catch (error) {
+                console.error("Logout Error:", error.message);
+                showAlert(`Logout Failed: ${error.message}`, "error");
+            }
+        };
+        
+        /**
+         * Handles the "Forgot Password" link click.
+         */
+        const handleForgotPassword = async () => {
+            const email = loginForm.email.value;
+            if (!email) {
+                showAlert("Please enter your email in the email field first.", "error");
+                return;
+            }
+            
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showAlert("Password reset email sent. Check your inbox.", "success");
+            } catch (error) {
+                console.error("Forgot Password Error:", error);
+                showAlert(`Error sending reset email: ${error.message}`, "error");
+            }
+        };
+
+        // --- Firestore Data Listeners ---
+
+        /**
+         * Initializes all real-time Firestore snapshot listeners.
+         * This is called after a successful login.
+         */
+        const initDashboardListeners = (user) => {
+            if (!db || !user) return;
+
+            // Detach old listeners if they exist
+            if (unsubscribeUser) unsubscribeUser();
+            if (unsubscribeTransactions) unsubscribeTransactions();
+            
+            // 1. Listen to the User's document
+            try {
+                const usersCol = collection(db, 'artifacts', appId, 'public/data/users');
+                // Find the user doc that matches the logged-in auth email
+                const userQuery = query(usersCol, where("email", "==", user.email));
+
+                unsubscribeUser = onSnapshot(userQuery, (snapshot) => {
+                    if (snapshot.empty) {
+                        console.error("CRITICAL: No user document found for email:", user.email);
+                        showAlert("Error: Could not find your investor profile.", "error");
+                        handleLogout(); // Log out user if profile doesn't exist
+                        return;
+                    }
+                    
+                    // Should only be one doc
+                    const userDoc = snapshot.docs[0];
+                    userDocId = userDoc.id;
+                    currentUserData = userDoc.data();
+                    
+                    // Render the dashboard cards
+                    renderDashboardCards(currentUserData);
+                    
+                    // 2. NOW that we have the userDocId, listen to their transactions
+                    initTransactionListener(userDocId);
+
+                }, (error) => {
+                    console.error("Error listening to user document:", error);
+                    showAlert("Failed to load user profile data.", "error");
+                });
+
+            } catch (e) {
+                console.error("Error setting up user listener:", e);
+                showAlert("Error setting up user listener.", "error");
+            }
+        };
+        
+        /**
+         * Initializes the transaction listener *after* we know the user's doc ID.
+         */
+        const initTransactionListener = (docId) => {
+            if (!docId) return;
+
+            // Detach old tx listener if it exists
+            if (unsubscribeTransactions) unsubscribeTransactions();
+
+            try {
+                const txCol = collection(db, 'artifacts', appId, 'public/data/transactions');
+                // Find transactions matching this user's ID, order by date
+                const txQuery = query(txCol, where("userId", "==", docId), orderBy('date', 'desc'));
+                
+                unsubscribeTransactions = onSnapshot(txQuery, (snapshot) => {
+                    const transactions = snapshot.docs.map(doc => doc.data());
+                    // Render the transactions table
+                    renderTransactions(transactions);
+                }, (error) => {
+                    console.error("Error listening to transactions:", error);
+                    showAlert("Failed to load transaction data.", "error");
+                });
+
+            } catch (e) {
+                console.error("Error setting up transactions listener:", e);
+                showAlert("Error setting up transactions listener.", "error");
+            }
+        };
+        
+        // --- Rendering Functions ---
+
+        /**
+         * Updates the dashboard stat cards and welcome message.
+         */
+        const renderDashboardCards = (userData) => {
+            if (!userData) return;
+            
+            clientName.textContent = userData.fullName || "Client";
+            statBalance.textContent = formatCurrency(userData.currentBalance);
+            statTotalRoi.textContent = formatCurrency(userData.totalROI);
+        };
+
+        /**
+         * Renders the transaction history table.
+         */
+        const renderTransactions = (transactions) => {
+            if (transactions.length === 0) {
+                transactionsTableBody.innerHTML = `
+                    <tr><td colspan="4" class="py-10 px-6 text-center text-gray-500">No transactions found for your account.</td></tr>
+                `;
+                return;
+            }
+
+            transactionsTableBody.innerHTML = transactions.map(tx => {
+                const isCredit = tx.amount >= 0;
+                const amountClass = isCredit ? 'text-green-600' : 'text-red-600';
+                const typeLabel = isCredit ? 'Credit' : 'Debit';
+                const typeClass = isCredit ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+
+                return `
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="py-4 px-6 text-sm text-gray-700">${formatDate(tx.date)}</td>
+                        <td class="py-4 px-6 text-sm font-medium text-gray-900">${tx.description}</td>
+                        <td class="py-4 px-6 text-sm">
+                            <span class="px-3 py-1 text-xs font-medium rounded-full ${typeClass}">
+                                ${tx.type || typeLabel}
+                            </span>
+                        </td>
+                        <td class="py-4 px-6 text-sm font-bold text-right ${amountClass}">
+                            ${isCredit ? '+' : ''}${formatCurrency(tx.amount)}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        // --- Event Listeners ---
+        
+        // Auth
+        loginForm.addEventListener('submit', handleLogin);
+        logoutButton.addEventListener('click', handleLogout);
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleForgotPassword();
+        });
+
+    </script>
+</body>
+</html>
