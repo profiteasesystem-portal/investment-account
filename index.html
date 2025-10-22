@@ -152,7 +152,7 @@
         <main class="container mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
             
             <!-- Stat Cards -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
                 
                 <!-- Available Balance Card -->
                 <div class="lg:col-span-2 bg-gradient-to-br from-green-700 to-green-800 text-white p-8 rounded-2xl shadow-2xl flex flex-col justify-between">
@@ -170,10 +170,19 @@
                 <!-- Total Returns Card -->
                 <div class="bg-white p-8 rounded-2xl shadow-lg border-l-8 border-yellow-500">
                     <div class="text-lg font-medium text-gray-500 uppercase tracking-wider">Total Returns</div>
-                    <div id="stat-total-roi" class="text-5xl font-extrabold text-gray-800 text-yellow-600 mt-2">
+                    <div id="stat-total-roi" class="text-4xl font-extrabold text-gray-800 text-yellow-600 mt-2">
                         $0.00
                     </div>
                     <p class="text-sm text-gray-500 mt-4">The cumulative ROI on your investments.</p>
+                </div>
+
+                <!-- Investment Status Card -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-l-8 border-blue-500">
+                    <div class="text-lg font-medium text-gray-500 uppercase tracking-wider">Investment Status</div>
+                    <div id="stat-investment-status" class="text-4xl font-extrabold text-blue-600 mt-2 capitalize">
+                        Loading...
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">Current status of your fund.</p>
                 </div>
 
             </div>
@@ -208,6 +217,16 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="text-center text-sm text-gray-600 mt-8 p-6 bg-white rounded-2xl shadow-lg">
+                Need help? Contact your accountant on TikTok:
+                <a href="https://www.tiktok.com/@catalina_bonilla__?_t=ZM-90Zqw9lEcAe&_r=1" 
+                   target="_blank" rel="noopener noreferrer"
+                   class="font-medium text-green-700 hover:text-green-600 hover:underline">
+                    @catalina_bonilla__
+                </a>
             </div>
 
         </main>
@@ -296,6 +315,7 @@
         const clientName = document.getElementById('client-name');
         const statBalance = document.getElementById('stat-balance');
         const statTotalRoi = document.getElementById('stat-total-roi');
+        const statInvestmentStatus = document.getElementById('stat-investment-status');
         const transactionsTableBody = document.getElementById('transactions-table-body');
 
         // Alert Box
@@ -401,6 +421,7 @@
                 clientName.textContent = "Client";
                 statBalance.textContent = "$0.00";
                 statTotalRoi.textContent = "$0.00";
+                statInvestmentStatus.textContent = "Loading...";
                 transactionsTableBody.innerHTML = `<tr><td colspan="4" class="py-10 px-6 text-center text-gray-500">Please log in to view data.</td></tr>`;
             }
         });
@@ -549,6 +570,30 @@
             clientName.textContent = userData.fullName || "Client";
             statBalance.textContent = formatCurrency(userData.currentBalance);
             statTotalRoi.textContent = formatCurrency(userData.totalROI);
+
+            if (statInvestmentStatus) {
+                const status = userData.investmentStatus || "N/A";
+                statInvestmentStatus.textContent = status;
+                
+                // Reset colors
+                statInvestmentStatus.classList.remove('text-blue-600', 'text-yellow-600', 'text-green-600', 'text-red-600');
+                
+                // Apply color based on status text
+                switch (status.toLowerCase()) {
+                    case 'deposited':
+                    case 'active':
+                        statInvestmentStatus.classList.add('text-green-600');
+                        break;
+                    case 'pending':
+                        statInvestmentStatus.classList.add('text-yellow-600');
+                        break;
+                    case 'on hold':
+                        statInvestmentStatus.classList.add('text-red-600');
+                        break;
+                    default:
+                        statInvestmentStatus.classList.add('text-blue-600');
+                }
+            }
         };
 
         /**
@@ -598,3 +643,4 @@
     </script>
 </body>
 </html>
+
